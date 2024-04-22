@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+</head>
+<body>
+    <h1><%= title %></h1>
+    <h3>Showing all dependents of <%= emp_id %></h3>
+    <a href="/">Home</a><br>
+    <a href="/employees/id/:<%= emp_id %>">Employee File</a><br>
+    <a href="/dependents/all">All Dependents</a><br><br>
+    <button class="delete-link" id="delete-dependent-button" value="<%= emp_id %>">Delete</button>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Relationship</th>
+        </tr>
+        <% for(let i=0; i < dependents.length; i++) { %>
+            <tr>
+                <td><%= dependents[i].name %></td>
+                <td><%= dependents[i].relationship %></td>
+            </tr>
+        <% } %>
+    </table>
+    
+    <script>
+        window.onload = function() {
+
+            let deleteButton = document.getElementById("delete-dependent-button");
+            deleteButton.addEventListener("click", function (event) {
+                let assoc_emp = event.currentTarget.value;
+                fetch("/dependents/delete/" + assoc_emp, {
+                    method: "DELETE",
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error deleting dependent');
+                });
+
+                window.location.href = "/dependents/all";
+            });
+        }
+    </script>
+
+    
+</body>
+</html>

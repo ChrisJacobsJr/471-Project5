@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Employee</title>
+</head>
+<body>
+    <h1><%= title %></h1>
+    <h3>Name: <%= employee.Fname %> <%= employee.Minit %> <%= employee.Lname %></h3>
+    <a href="/dependents/id/:<%= employee.SSN %>">View Dependents</a>
+    <a href="/employees/all">All Employees</a>
+    <a href="/">Home</a><br><br><br>
+    <button type="button" id="update-employee-btn">Edit</button>
+    <button type="button" id="delete-employee-btn" value="<%= employee.SSN %>">Delete</button>
+
+<!-- Todo add error checking -->
+    <form id="update-form">
+        <label for="ssn">SSN:</label>
+        <input type="text" id="ssn" name="ssn" value="<%= employee.SSN %>" readonly>
+        <label for="dob">DOB:</label>
+        <input type="date" id="dob" name="dob" value="<%= employee.DOB %>">
+        <label for="fname">First Name:</label>
+        <input type="text" id="fname" name="fname" value="<%= employee.Fname %>">
+        <label for="minit">Middle Initial:</label>
+        <input type="text" id="minit" name="minit" value="<%= employee.Minit %>">
+        <label for="lname">Last Name:</label>
+        <input type="text" id="lname" name="lname" value="<%= employee.Lname %>">
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" value="<%= employee.address %>">
+        <input type="submit" value="Update">
+    </form>
+    
+    
+    <script>
+        window.onload = function() {
+            let deleteButton = document.getElementById("delete-employee-btn");
+            deleteButton.addEventListener("click", function (event) {
+                let SSN = event.currentTarget.value;
+                fetch("/employees/delete/" + SSN, {
+                    method: "DELETE",
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error deleting employee');
+                });
+
+                // Redirect immediately after sending the request
+                window.location.href = '/employees/all'; // Redirect to the list of all employees
+            });
+
+            document.getElementById('update-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                let url = '/employees/update/' + document.getElementById('ssn').value;
+                let data = {
+                    SSN: document.getElementById('ssn').value,
+                    DOB: document.getElementById('dob').value,
+                    Fname: document.getElementById('fname').value,
+                    Minit: document.getElementById('minit').value,
+                    Lname: document.getElementById('lname').value,
+                    address: document.getElementById('address').value
+                };
+
+                fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                })
+                .then(data => {
+                    console.log(data);
+                    window.location.href = "/employees/all";
+                })
+                .then(response => response.json())
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            });
+        }
+    </script>
+
+    
+</body>
+</html>

@@ -3,26 +3,20 @@ const db = require("../models/db-conn");
 const path = require("path");
 
 function getAll() {
-  let sql = "SELECT * FROM menu;";
+  let sql = "SELECT * FROM employee;";
   const data = db.all(sql);
   return data;
 };
 
-function getAllByCategory(category) {
-  let sql = "SELECT * FROM menu WHERE category =? ORDER BY name;";
-  const data = db.all(sql, category);
-  return data;
-};
-
 function getOneById(id) {
-  let sql = "SELECT * FROM MENU WHERE id =? ;";
+  let sql = "SELECT * FROM employee WHERE employee.SSN =? ;";
   const item = db.get(sql, id);
   return item;
 };
 
 function createNew(params) {
   let sql =
-    'INSERT INTO menu ("id","name","category","subcategory","price","cost") ' +
+    'INSERT INTO employee ("SSN","DOB","Fname","Minit","Lname","address") ' +
     "VALUES(?, ?, ?, ?, ?, ?);";
   const item = db.run(sql, params);
   return item;
@@ -35,13 +29,14 @@ function search(params) {
 };
 
 function deleteById(id) {
-  let sql = 'DELETE FROM MENU WHERE id =?';
+  let sql = 'DELETE FROM employee WHERE SSN =?';
   const response = db.run(sql, id);
   return response;
 };
 
+
 function update(params) {
-  let sql = 'UPDATE menu SET name =?, category =?,subcategory =?,price =?,cost =? WHERE id =?;';
+  let sql = 'UPDATE employee SET DOB =?, Fname =?, Minit =?, Lname =?, address =? WHERE SSN =?;';
   const response = db.run(sql, params);
   return response;
 };
@@ -50,7 +45,6 @@ function update(params) {
 
 module.exports = {
   getAll,
-  getAllByCategory,
   getOneById,
   createNew,
   search,

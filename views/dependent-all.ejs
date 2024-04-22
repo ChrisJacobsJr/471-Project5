@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+</head>
+<body>
+    <h1><%= title %></h1>
+    <a href="/">Home</a><br>
+    <form action="/dependents/new" method="POST">
+        <label for="assoc_emp">Associated Employee:</label>
+        <input type="text" id="assoc_emp" name="assoc_emp" required>
+        
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="relationship">Relationship:</label>
+        <input type="text" id="relationship" name="relationship" required>
+        
+        
+        <input type="submit" value="Add Dependent">
+    </form>
+    <table>
+        <tr>
+            <th>Associated Employee</th>
+            <th>Name</th>
+            <th>Relationship</th>
+        </tr>
+        <% for(let i=0; i < dependents.length; i++) { %>
+            <tr>
+                <td><a href="/dependents/id/:<%= dependents[i].assoc_emp %>"><%= dependents[i].assoc_emp %></a></td>
+                <td><%= dependents[i].name %></td>
+                <td><%= dependents[i].relationship %></td>
+            </tr>
+        <% } %>
+    </table>
+    
+</body>
+</html>

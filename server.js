@@ -12,8 +12,11 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const menuRouter = require("./routes/menu.route");
-app.use("/menu", menuRouter);
+const empRouter = require("./routes/employee.route");
+app.use("/employees", empRouter);
+
+const depRouter = require("./routes/dependents.route");
+app.use("/dependents", depRouter);
 
 app.get("/", (req, res) => {
   res.render("index", { title: 'Home Page' });
